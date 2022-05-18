@@ -1,0 +1,5 @@
+com\natwest\currency\util\CurrencyDenominationService.class
+com\natwest\currency\controller\CurrencyDenominationController.class
+com\natwest\currency\data\WalletStore.class
+com\natwest\currency\CurrencyApplication.class
+com\natwest\currency\configuration\ApplicationConfig.class

@@ -1,7 +1,9 @@
 # CurrencyDenomination
 Returns the min number of notes for an amount in the wallet
 
-1. The application starts in the default port of 8080.
+Pre-requisite - JDK 1.8
+
+1. The application starts in port 8080.
 
 2. The contents of the wallet has been set in file WalletStore. To change the value, modify the following lines in file
    ApplicationConfig.java public void loadWallet() { walletStore.setCurrencyNotesList(List.of(1, 50, 5, 5, 10, 1, 20,
@@ -14,4 +16,6 @@ Returns the min number of notes for an amount in the wallet
 5. To test the application from the browser, use the following URL
    http://localhost:8080/currency/denomination/183
    where, 183 -> is the amount for which the denomination from the wallet will be displayed
+
+6. Swagger URL is -> http://localhost:8080/swagger-ui/index.html
 

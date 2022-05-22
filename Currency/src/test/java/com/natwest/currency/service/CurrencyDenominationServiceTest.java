@@ -1,6 +1,7 @@
 package com.natwest.currency.service;
 
 import com.natwest.currency.data.WalletStore;
+import com.natwest.currency.exception.NWApplicationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CurrencyDenominationServiceTest {
 
@@ -22,7 +24,7 @@ public class CurrencyDenominationServiceTest {
     }
 
     @Test
-    void testDataWithLessMaxDenomination() {
+    void testDataWithLessMaxDenomination() throws NWApplicationException {
         final List<Integer> currencyNotesList = Arrays.asList(1, 50, 5, 5, 10, 1, 20, 20, 20, 5, 1, 50);
         walletStore.setCurrencyNotesList(currencyNotesList);
         final int amount = 183;
@@ -32,7 +34,7 @@ public class CurrencyDenominationServiceTest {
     }
 
     @Test
-    void testGivenSampleAmount() {
+    void testGivenSampleAmount() throws NWApplicationException {
         final List<Integer> currencyNotesList = Arrays.asList(1, 50, 5, 10, 1, 20, 20, 5, 1, 50);
         walletStore.setCurrencyNotesList(currencyNotesList);
         final int amount = 123;
@@ -42,7 +44,7 @@ public class CurrencyDenominationServiceTest {
     }
 
     @Test
-    void testEmptyListForGivenSampleAmount() {
+    void testEmptyListForGivenSampleAmount() throws NWApplicationException {
         final List<Integer> currencyNotesList = Arrays.asList(10, 5, 5, 1);
         walletStore.setCurrencyNotesList(currencyNotesList);
         final int amount = 12;
@@ -52,7 +54,7 @@ public class CurrencyDenominationServiceTest {
     }
 
     @Test
-    void test4DigitAmount() {
+    void test4DigitAmount() throws NWApplicationException {
         final List<Integer> currencyNotesList = Arrays.asList(500, 100, 100, 50, 50, 100, 1, 1,
                 1000, 1000, 500, 10, 5, 5, 1);
         walletStore.setCurrencyNotesList(currencyNotesList);
@@ -63,7 +65,7 @@ public class CurrencyDenominationServiceTest {
     }
 
     @Test
-    void testAmountGreaterThanMoneyInWallet() {
+    void testAmountGreaterThanMoneyInWallet() throws NWApplicationException {
         final List<Integer> currencyNotesList = Arrays.asList(10, 5, 100, 20, 5, 5, 1);
         walletStore.setCurrencyNotesList(currencyNotesList);
         final int amount = 512;
@@ -73,12 +75,21 @@ public class CurrencyDenominationServiceTest {
     }
 
     @Test
-    void testWithAmountAsZero() {
+    void testWithAmountAsZero() throws NWApplicationException {
         final List<Integer> currencyNotesList = Arrays.asList(10, 5, 5, 1);
         walletStore.setCurrencyNotesList(currencyNotesList);
         final int amount = 0;
         final List<Integer> expectedDenomination = new ArrayList<>();
         final List<Integer> actualDenomination = currencyDenominationService.getDenomination(amount);
         assertEquals(expectedDenomination, actualDenomination);
+    }
+
+    @Test
+    void testCurrencyListNull() {
+        walletStore.setCurrencyNotesList(null);
+        final int amount = 0;
+        assertThrows(NWApplicationException.class, () -> {
+            currencyDenominationService.getDenomination(amount);
+        });
     }
 }
